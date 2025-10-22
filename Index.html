@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMUN - Simulação da ONU</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+            color: white;
+            padding: 150px 2rem 100px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s 0.2s backwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #b8860b;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s 0.4s backwards;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .whatsapp-button {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-left: 1rem;
+            animation: fadeInUp 1s 0.6s backwards;
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            background: #128C7E;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .blog-post {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .blog-post h3 {
+            color: #b8860b;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .blog-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-excerpt {
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .read-more {
+            color: #b8860b;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #daa520;
+        }
+
+        .blog-content {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .blog-content.active {
+            display: block;
+        }
+
+        .blog-content p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .blog-content h4 {
+            color: #b8860b;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: transform 0.3s, opacity 0.3s;
+            font-weight: 500;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+
+        .instagram-link {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #b8860b;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-top: 4px solid #daa520;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            color: #b8860b;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .about {
+            background: #f8fafc;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #daa520;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        footer {
+            background: #b8860b;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #daa520;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: #b8860b;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #daa520;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .whatsapp-button {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">SMUN</div>
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#programas">Programas</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Bem-vindo ao SMUN</h1>
+        <p>Instituto de Simulação da Organização das Nações Unidas</p>
+        <div class="button-group">
+            <a href="#programas" class="cta-button">Conheça Nossos Programas</a>
+            <a href="https://chat.whatsapp.com/HY1lvapVQoI6qhQz7h9F04?mode=wwt" target="_blank" class="whatsapp-button">📱 Grupo de Simulação Semanal</a>
+        </div>
+    </section>
+
+    <section id="sobre" class="about">
+        <h2 class="section-title">Sobre o SMUN</h2>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8;">
+            O SMUN é um instituto jovem e dinâmico, fundado em 2025, dedicado à formação de líderes através 
+            da simulação das Nações Unidas. Mesmo em nosso primeiro ano, já realizamos três simulações de 
+            excelência, promovendo debates profundos sobre diplomacia e resolução pacífica de conflitos. 
+            Somos novos, mas nossa paixão e qualidade nos destacam na preparação de jovens para os desafios globais!
+        </p>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Participantes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Simulações Realizadas</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2025</div>
+                <div class="stat-label">Ano de Fundação</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10+</div>
+                <div class="stat-label">Comitês Simulados</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="programas">
+        <h2 class="section-title">Nossos Programas</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>🌍 Simulação Anual</h3>
+                <p>Nossa conferência principal reúne estudantes de todo o país para debater os principais temas da agenda internacional em comitês especializados.</p>
+            </div>
+            <div class="card">
+                <h3>📚 Curso de Formação</h3>
+                <p>Prepare-se para as simulações com nosso curso completo sobre procedimentos parlamentares, oratória e diplomacia internacional.</p>
+            </div>
+            <div class="card">
+                <h3>🎓 Programa de Mentoria</h3>
+                <p>Delegados experientes orientam novatos, compartilhando conhecimentos e estratégias para um desempenho excepcional.</p>
+            </div>
+            <div class="card">
+                <h3>🏆 Competições Escolares</h3>
+                <p>Eventos regionais que levam a simulação da ONU para escolas, democratizando o acesso à experiência diplomática.</p>
+            </div>
+            <div class="card">
+                <h3>🌐 Workshops Temáticos</h3>
+                <p>Seminários focados em temas específicos como direitos humanos, meio ambiente, segurança internacional e desenvolvimento sustentável.</p>
+            </div>
+            <div class="card">
+                <h3>🤝 Rede Global de Contatos</h3>
+                <p>Conecte-se com delegados e entusiastas de simulações da ONU de todos os cantos do mundo, especialmente da África e Portugal, ampliando sua visão diplomática e cultural.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog">
+        <h2 class="section-title">Blog - Atualidades</h2>
+        <p style="text-align: center; margin-bottom: 3rem; color: #666;">Acompanhe as últimas notícias e análises sobre política internacional</p>
+        
+        <div class="blog-post">
+            <h3>Tensões no Oriente Médio e o Papel da ONU</h3>
+            <div class="blog-date">15 de Outubro de 2025</div>
+            <p class="blog-excerpt">
+                A escalada de conflitos na região continua desafiando a comunidade internacional. 
+                Neste artigo, analisamos as resoluções do Conselho de Segurança e os esforços 
+                diplomáticos em curso para estabelecer um cessar-fogo duradouro e proteger a população civil.
+            </p>
+            <a href="javascript:void(0);" class="read-more" onclick="toggleBlog(event, 'blog1')">Ver mais →</a>
+            
+            <div class="blog-content" id="blog1">
+                <h4>Contexto Histórico</h4>
+                <p>
+                    O Oriente Médio tem sido palco de conflitos complexos que envolvem questões territoriais, 
+                    religiosas e geopolíticas. A recente escalada de violência trouxe à tona a necessidade 
+                    urgente de intervenção diplomática coordenada pela comunidade internacional.
+                </p>
+                
+                <h4>Atuação do Conselho de Segurança</h4>
+                <p>
+                    O Conselho de Segurança da ONU tem se reunido em sessões emergenciais para discutir 
+                    resoluções que visam estabelecer corredores humanitários e promover o diálogo entre 
+                    as partes em conflito. No entanto, divergências entre os membros permanentes têm 
+                    dificultado a aprovação de medidas mais contundentes.
+                </p>
+                
+                <h4>Esforços Humanitários</h4>
+                <p>
+                    Agências da ONU como UNICEF, ACNUR e PMA intensificam suas operações para fornecer 
+                    assistência às populações afetadas. Milhões de pessoas necessitam de ajuda emergencial, 
+                    incluindo alimentos, água potável, abrigo e cuidados médicos.
+                </p>
+                
+                <h4>Perspectivas para o Futuro</h4>
+                <p>
+                    A solução para os conflitos no Oriente Médio requer um comprometimento genuíno de 
+                    todas as partes envolvidas com o diálogo e a diplomacia. A ONU continua sendo o 
+                    principal fórum multilateral para a busca de soluções pacíficas e duradouras.
+                </p>
+            </div>
+        </div>
+
+        <div class="blog-post">
+            <h3>Mudanças Climáticas: Preparação para a COP30</h3>
+            <div class="blog-date">8 de Outubro de 2025</div>
+            <p class="blog-excerpt">
+                Com a Conferência das Nações Unidas sobre Mudanças Climáticas se aproximando, 
+                países intensificam negociações sobre metas de emissões. Exploramos as posições 
+                dos principais blocos e o papel dos países em desenvolvimento nas discussões.
+            </p>
+            <a href="javascript:void(0);" class="read-more" onclick="toggleBlog(event, 'blog2')">Ver mais →</a>
+            
+            <div class="blog-content" id="blog2">
+                <h4>A Urgência Climática</h4>
+                <p>
+                    O relatório mais recente do IPCC deixa claro: o tempo para ação decisiva está 
+                    se esgotando. Com o aumento da temperatura global já ultrapassando 1,2°C em relação 
+                    aos níveis pré-industriais, os impactos das mudanças climáticas são cada vez mais 
+                    evidentes em todos os continentes.
+                </p>
+                
+                <h4>Posições dos Principais Blocos</h4>
+                <p>
+                    Países desenvolvidos defendem metas ambiciosas de neutralidade de carbono, mas 
+                    enfrentam pressão para aumentar o financiamento climático aos países em desenvolvimento. 
+                    Por sua vez, nações emergentes argumentam por maior responsabilização histórica das 
+                    economias desenvolvidas pelas emissões acumuladas.
+                </p>
+                
+                <h4>O Papel do Brasil</h4>
+                <p>
+                    Como anfitrião da COP30, o Brasil tem a oportunidade de liderar as negociações 
+                    sobre proteção de florestas tropicais e transição energética. A Amazônia continua 
+                    sendo um tema central nas discussões sobre biodiversidade e sequestro de carbono.
+                </p>
+                
+                <h4>Desafios e Oportunidades</h4>
+                <p>
+                    A COP30 precisará abordar não apenas metas de redução de emissões, mas também 
+                    mecanismos de adaptação, transferência de tecnologia e justiça climática. O sucesso 
+                    da conferência dependerá da capacidade dos países de encontrar um equilíbrio entre 
+                    desenvolvimento econômico e sustentabilidade ambiental.
+                </p>
+            </div>
+        </div>
+
+        <div class="blog-post">
+            <h3>Direitos Humanos na Era Digital</h3>
+            <div class="blog-date">1 de Outubro de 2025</div>
+            <p class="blog-excerpt">
+                A regulamentação de inteligência artificial e proteção de dados pessoais dominam 
+                debates no Conselho de Direitos Humanos. Analisamos como diferentes nações 
+                equilibram inovação tecnológica com garantias fundamentais.
+            </p>
+            <a href="javascript:void(0);" class="read-more" onclick="toggleBlog(event, 'blog3')">Ver mais →</a>
+            
+            <div class="blog-content" id="blog3">
+                <h4>Novos Desafios Digitais</h4>
+                <p>
+                    A rápida evolução tecnológica trouxe benefícios inegáveis, mas também criou novos 
+                    desafios para a proteção dos direitos humanos. Vigilância em massa, algoritmos 
+                    discriminatórios e desinformação representam ameaças às liberdades fundamentais.
+                </p>
+                
+                <h4>Regulamentação de IA</h4>
+                <p>
+                    Diferentes abordagens regulatórias estão sendo debatidas globalmente. A União Europeia 
+                    avança com sua Lei de IA, enquanto outros países buscam equilibrar inovação com 
+                    proteção de direitos. O desafio é criar normas que sejam eficazes sem sufocar o 
+                    desenvolvimento tecnológico.
+                </p>
+                
+                <h4>Privacidade e Proteção de Dados</h4>
+                <p>
+                    A coleta massiva de dados pessoais por empresas e governos levanta questões sobre 
+                    consentimento, transparência e direito ao esquecimento. Legislações como a LGPD no 
+                    Brasil e o GDPR na Europa estabelecem padrões importantes, mas a implementação 
+                    global ainda é desigual.
+                </p>
+                
+                <h4>O Caminho à Frente</h4>
+                <p>
+                    A ONU tem trabalhado para estabelecer princípios universais que protejam os direitos 
+                    humanos no ambiente digital. Isso inclui garantir acesso equitativo à internet, 
+                    combater o discurso de ódio online e proteger ativistas digitais de perseguição.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato">
+        <h2 class="section-title">Entre em Contato</h2>
+        
+        <div class="social-links">
+            <a href="https://instagram.com/instituto_smun" target="_blank" class="social-link instagram-link">
+                📸 @instituto_smun
+            </a>
+            <a href="https://wa.me/5511959353177" target="_blank" class="social-link" style="background: #25D366;">
+                📱 (11) 95935-3177
+            </a>
+            <a href="mailto:davimendesfinatte@gmail.com" class="social-link" style="background: #b8860b;">
+                ✉️ davimendesfinatte@gmail.com
+            </a>
+        </div>
+
+        <form class="contact-form" style="margin-top: 3rem;">
+            <div class="form-group">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="assunto">Assunto</label>
+                <input type="text" id="assunto" name="assunto" required>
+            </div>
+            <div class="form-group">
+                <label for="mensagem">Mensagem</label>
+                <textarea id="mensagem" name="mensagem" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Enviar Mensagem</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SMUN - Instituto de Simulação da ONU. Todos os direitos reservados.</p>
+        <p style="margin-top: 0.5rem; opacity: 0.9;">Formando líderes globais através da diplomacia e do diálogo.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || !href) return;
+                
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        function toggleBlog(event, blogId) {
+            event.preventDefault();
+            const content = document.getElementById(blogId);
+            const link = event.target;
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                link.textContent = 'Ver mais →';
+            } else {
+                content.classList.add('active');
+                link.textContent = 'Ver menos ←';
+            }
+        }
+
+        document.querySelector('.contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const assunto = document.getElementById('assunto').value;
+            const mensagem = document.getElementById('mensagem').value;
+            
+            const mailtoLink = `mailto:davimendesfinatte@gmail.com?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent('Nome: ' + nome + '\nEmail: ' + email + '\n\nMensagem:\n' + mensagem)}`;
+            
+            window.location.href = mailtoLink;
+            
+            this.reset();
+        });
+    </script>
+</body>
+</html>
